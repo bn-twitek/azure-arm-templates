@@ -32,6 +32,7 @@
 		"vmName": "barracuda-ng-firewall",
 		"vmSize": "Standard_D2",
 		"publicIPAddressType": "Dynamic",
+		"vmStorageAccountContainerName": "vhds",
 		"vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
 		"subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
 	},
