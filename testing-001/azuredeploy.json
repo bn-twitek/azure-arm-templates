@@ -29,6 +29,7 @@
 		"subnetName": "Subnet",
 		"subnetPrefix": "10.0.0.0/24",
 		"nicName": "myVMNic",
+		"vmName": "barracuda-ng-firewall",
 		"vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
 		"subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
 	},
