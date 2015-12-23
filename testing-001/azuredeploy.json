@@ -21,7 +21,7 @@
 		"imagePublisher": "barracudanetworks",
 		"imageOffer": "barracuda-ng-firewall",
 		"imageSku": "byol",
-		"storageAccountName": "[concat(uniquestring(resourceGroup().id), 'barracuda-ng-firewall')]",
+		"storageAccountName": "[concat(uniquestring(resourceGroup().id), 'ngf')]",
 		"storageAccountType": "Standard_LRS",
 		"publicIPAddressName": "myPublicIP",
 		"addressPrefix": "10.0.0.0/16",
