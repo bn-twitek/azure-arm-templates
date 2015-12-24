@@ -1,6 +1,6 @@
 {
 	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-	"contentVersion": "1.0.0.0",
+	"contentVersion": "1.0.0.1",
 	"parameters": {
 		"dnsLabelPrefix": {
 			"type": "string",
@@ -130,7 +130,7 @@
 					"computerName": "[variables('vmName')]",
 					"adminUsername": "this_value_is_ignored",
 					"adminPassword": "[parameters('Password')]",
-					"customData": "[base64(concat('#!/bin/bash\\n\\n', 'echo \\"/opt/phion/bin/getpar -bli bla',[parameters('storageAccountName')],'\\" >> /tmp/getpar.log'))]"
+					"customData": "[base64(concat('#!/bin/bash\\n\\n', 'echo \"/opt/phion/bin/getpar -bli bla',[parameters('storageAccountName')],'\" >> /tmp/getpar.log'))]"
 				},
 				"storageProfile": {
 					"osDisk": {
