@@ -139,7 +139,7 @@
 							"uri" : "[parameters('userImageVhdURI')]"
 						},
 						"vhd": {
-							"uri": "[concat('http://',parameters('storageAccountName'),'/',variables('vmName'),'-OS.vhd')]"
+							"uri": "[concat(parameters('storageAccountName'),'/',variables('vmName'),'-OS.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
