@@ -19,6 +19,12 @@
 			"metadata": {
 				"description": "Storage for your virtual machine disks"
 			}
+		},
+		"storageAccountName": {
+			"type": "string",
+			"metadata": {
+				"description": "URL for the OS Disk"
+			}
 		}
 	},
 	"variables": {
@@ -133,7 +139,7 @@
 							"uri" : "[parameters('userImageVhdURI')]"
 						},
 						"vhd": {
-							"uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('vmName'),'-OS.vhd')]"
+							"uri": "[concat('http://',parameters('storageAccountName'),'/',variables('vmName'),'-OS.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
