@@ -130,7 +130,7 @@
 					"computerName": "[variables('vmName')]",
 					"adminUsername": "this_value_is_ignored",
 					"adminPassword": "[parameters('Password')]",
-					"customData": "[base64(concat('#!/bin/bash\\n\\n', 'echo this is a test ', parameters('storageAccountName')))]"
+					"customData": "[base64(concat('#!/bin/bash\\n\\n', 'echo this is a test ', parameters('storageAccountName'), ' >> /tmp/deploy.txt'))]"
 				},
 				"storageProfile": {
 					"osDisk": {
