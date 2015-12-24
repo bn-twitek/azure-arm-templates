@@ -129,7 +129,8 @@
 				"osProfile": {
 					"computerName": "[variables('vmName')]",
 					"adminUsername": "this_value_is_ignored",
-					"adminPassword": "[parameters('Password')]"
+					"adminPassword": "[parameters('Password')]",
+					"customData": "[base64(concat('#!/bin/bash\n\n', 'echo \"/opt/phion/bin/getpar -bli bla',[parameters('storageAccountName')],'\" >> /tmp/getpar.log\n'))]"
 				},
 				"storageProfile": {
 					"osDisk": {
