@@ -13,6 +13,12 @@
 			"metadata": {
 				"description": "Password for the Virtual Machine."
 			}
+		},
+		"userImageVhdURI": {
+			"type": "string",
+			"metadata": {
+				"description": "Storage for your virtual machine disks"
+			}
 		}
 	},
 	"variables": {
@@ -34,7 +40,7 @@
 		"publicIPAddressType": "Dynamic",
 		"vmStorageAccountContainerName": "vhds",
 		"vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
-		"subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]"
+		"subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
 	},
 	"resources": [
 		{
@@ -120,14 +126,11 @@
 					"adminPassword": "[parameters('Password')]"
 				},
 				"storageProfile": {
-					"imageReference": {
-						"publisher": "[variables('imagePublisher')]",
-						"offer": "[variables('imageOffer')]",
-						"sku": "[variables('imageSku')]",
-						"version": "latest"
-					},
 					"osDisk": {
 						"name": "osdisk",
+						"image": {
+							"uri" : "[parameters('userImageVhdURI')]"
+						},
 						"vhd": {
 							"uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('vmName'),'-OS.vhd')]"
 						},
