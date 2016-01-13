@@ -1,0 +1,150 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"dnsname": {
+			"type": "string",
+			"metadata": {
+				"description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
+			}
+		},
+		"Password": {
+			"type": "securestring",
+			"metadata": {
+				"description": "Password for the Virtual Machine."
+			}
+		},
+		"userImageVhdURI": {
+			"type": "string",
+			"metadata": {
+				"description": "Storage for your virtual machine disks"
+			}
+		},
+		"customData": {
+			"type": "string",
+			"metadata": {
+				"description": "base64 encoded custom data"
+			}
+		}
+	},
+	"variables": {
+		"apiVersion": "2015-06-15",
+		"location": "[resourceGroup().location]",
+		"storageAccountType": "Standard_LRS",
+		"addressPrefix": "10.0.0.0/16",
+		"subnetPrefix": "10.0.0.0/24"
+	},
+	"resources": [
+		{
+			"type": "Microsoft.Storage/storageAccounts",
+			"name": "bng-storage",
+			"apiVersion": "[variables('apiVersion')]",
+			"location": "[variables('location')]",
+			"properties": { "accountType": "[variables('storageAccountType')]" }
+		},
+		{
+			"apiVersion": "[variables('apiVersion')]",
+			"type": "Microsoft.Network/publicIPAddresses",
+			"name": "bng-publicip",
+			"location": "[variables('location')]",
+			"properties": {
+				"publicIPAllocationMethod": "Dynamic",
+				"dnsSettings": { "domainNameLabel": "[parameters('dnsname')]" }
+			}
+		},
+		{
+			"apiVersion": "[variables('apiVersion')]",
+			"type": "Microsoft.Network/virtualNetworks",
+			"name": "bng-vnet",
+			"location": "[variables('location')]",
+			"properties": {
+				"addressSpace": {
+					"addressPrefixes": [
+						"[variables('addressPrefix')]"
+					]
+				},
+				"subnets": [
+					{
+						"name": "bng-subnet",
+						"properties": {
+							"addressPrefix": "[variables('subnetPrefix')]"
+						}
+					}
+				]
+			}
+		},
+		{
+			"apiVersion": "[variables('apiVersion')]",
+			"type": "Microsoft.Network/networkInterfaces",
+			"name": "bng-nic1",
+			"location": "[variables('location')]",
+			"dependsOn": [
+				"Microsoft.Network/publicIPAddress/bng-publicip",
+				"Microsoft.Network/virtualNetworks/bng-vnet"
+			],
+			"properties": {
+				"ipConfigurations": [
+					{
+						"name": "ipconfig1",
+						"properties": {
+							"privateIPAllocationMethod": "Dynamic",
+							"publicIPAddress": {
+								"id": "[resourceId('Microsoft.Network/publicIPAddresses/bng-publicip')]"
+							},
+							"subnet": {
+								"id": "[resourceId('Microsoft.Network/virtualNetworks/bng-vnet/subnets/bng-subnet')]"
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"apiVersion": "[variables('apiVersion')]",
+			"type": "Microsoft.Compute/virtualMachines",
+			"name": "bng-vm",
+			"location": "[variables('location')]",
+			"dependsOn": [
+				"Microsoft.Storage/storageAccount/bng-storage",
+				"Microsoft.Network/networkInterfaces/bng-nic1"
+			],
+			"properties": {
+				"hardwareProfile": {
+					"vmSize": "Standard A1"
+				},
+				"osProfile": {
+					"computerName": "bng-vm",
+					"adminUsername": "this_value_is_ignored",
+					"adminPassword": "[parameters('Password')]",
+					"customData": "[parameters('customData')]"
+				},
+				"storageProfile": {
+					"osDisk": {
+						"name": "osdisk",
+						"osType" : "linux",
+						"image": {
+							"uri" : "[parameters('userImageVhdURI')]"
+						},
+						"vhd": {
+							"uri": "bng-storage/bng-vm-os.vhd"
+						},
+						"caching": "ReadWrite",
+						"createOption": "FromImage"
+					}
+				},
+				"networkProfile": {
+					"networkInterfaces": [
+						{
+							"id": "[resourceId('Microsoft.Network/networkInterfaces/bng-nic1')]"
+						}
+					]
+				},
+				"diagnosticsProfile": {
+					"bootDiagnostics": {
+						"enabled": "false"
+					}
+				}
+			}
+		}
+	]
+}
