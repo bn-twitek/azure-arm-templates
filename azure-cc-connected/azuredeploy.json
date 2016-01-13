@@ -92,10 +92,10 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"publicIPAddress": {
-								"id": "[resourceId(concat('Microsoft.Network/publicIPAddresses/', variables('ipName')))]"
+								"id": "[resourceId('Microsoft.Network/publicIPAddresses/', variables('ipName'))]"
 							},
 							"subnet": {
-								"id": "[resourceId(concat('Microsoft.Network/virtualNetworks/', variables('vnetName'), '/subnets/bngsubnet'))]"
+								"id": "[concat(resourceId('Microsoft.Network/virtualNetworks', variables('vnetName')), '/subnets/bngsubnet')]"
 							}
 						}
 					}
@@ -138,7 +138,7 @@
 				"networkProfile": {
 					"networkInterfaces": [
 						{
-							"id": "[resourceId('Microsoft.Network/networkInterfaces/bngnic1')]"
+							"id": "[resourceId('Microsoft.Network/networkInterfaces/', 'bngnic1')]"
 						}
 					]
 				},
