@@ -113,7 +113,7 @@
 			],
 			"properties": {
 				"hardwareProfile": {
-					"vmSize": "Standard A1"
+					"vmSize": "Standard_A1"
 				},
 				"osProfile": {
 					"computerName": "bngvm",
