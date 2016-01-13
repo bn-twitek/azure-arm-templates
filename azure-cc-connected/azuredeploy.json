@@ -32,12 +32,15 @@
 		"location": "[resourceGroup().location]",
 		"storageAccountType": "Standard_LRS",
 		"addressPrefix": "10.0.0.0/16",
-		"subnetPrefix": "10.0.0.0/24"
+		"subnetPrefix": "10.0.0.0/24",
+		"storageName": "bngstoragecctest",
+		"ipName": "bngpublicipcctest",
+		"vnetName": "bngvnetcctest"
 	},
 	"resources": [
 		{
 			"type": "Microsoft.Storage/storageAccounts",
-			"name": "bngstorage",
+			"name": "[variables('storageName')]",
 			"apiVersion": "[variables('apiVersion')]",
 			"location": "[variables('location')]",
 			"properties": { "accountType": "[variables('storageAccountType')]" }
@@ -45,7 +48,7 @@
 		{
 			"apiVersion": "[variables('apiVersion')]",
 			"type": "Microsoft.Network/publicIPAddresses",
-			"name": "bngpublicip",
+			"name": "[variables('ipName')]",
 			"location": "[variables('location')]",
 			"properties": {
 				"publicIPAllocationMethod": "Dynamic",
@@ -55,7 +58,7 @@
 		{
 			"apiVersion": "[variables('apiVersion')]",
 			"type": "Microsoft.Network/virtualNetworks",
-			"name": "bngvnet",
+			"name": "[variables('vnetName')]",
 			"location": "[variables('location')]",
 			"properties": {
 				"addressSpace": {
@@ -79,8 +82,8 @@
 			"name": "bngnic1",
 			"location": "[variables('location')]",
 			"dependsOn": [
-				"Microsoft.Network/publicIPAddresses/bngpublicip",
-				"Microsoft.Network/virtualNetworks/bngvnet"
+				"[concat('Microsoft.Network/publicIPAddresses/', variables('ipName'))]",
+				"[concat('Microsoft.Network/virtualNetworks/', variables('vnetName'))]"
 			],
 			"properties": {
 				"ipConfigurations": [
@@ -89,10 +92,10 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"publicIPAddress": {
-								"id": "[resourceId('Microsoft.Network/publicIPAddresses/bngpublicip')]"
+								"id": "[resourceId(concat('Microsoft.Network/publicIPAddresses/', variables('ipName')))]"
 							},
 							"subnet": {
-								"id": "[resourceId('Microsoft.Network/virtualNetworks/bngvnet/subnets/bngsubnet')]"
+								"id": "[resourceId(concat('Microsoft.Network/virtualNetworks/', variables('vnetName'), '/subnets/bngsubnet'))]"
 							}
 						}
 					}
@@ -105,7 +108,7 @@
 			"name": "bngvm",
 			"location": "[variables('location')]",
 			"dependsOn": [
-				"Microsoft.Storage/storageAccounts/bngstorage",
+				"[concat('Microsoft.Storage/storageAccounts/', variables('storageName'))]",
 				"Microsoft.Network/networkInterfaces/bngnic1"
 			],
 			"properties": {
@@ -126,7 +129,7 @@
 							"uri" : "[parameters('userImageVhdURI')]"
 						},
 						"vhd": {
-							"uri": "bngstorage/bngvm-os.vhd"
+							"uri": "[concat(variables('storageName'), '/bngvm-os.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
