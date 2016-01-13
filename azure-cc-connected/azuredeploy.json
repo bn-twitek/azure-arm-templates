@@ -37,7 +37,7 @@
 	"resources": [
 		{
 			"type": "Microsoft.Storage/storageAccounts",
-			"name": "bng-storage",
+			"name": "bngstorage",
 			"apiVersion": "[variables('apiVersion')]",
 			"location": "[variables('location')]",
 			"properties": { "accountType": "[variables('storageAccountType')]" }
@@ -45,7 +45,7 @@
 		{
 			"apiVersion": "[variables('apiVersion')]",
 			"type": "Microsoft.Network/publicIPAddresses",
-			"name": "bng-publicip",
+			"name": "bngpublicip",
 			"location": "[variables('location')]",
 			"properties": {
 				"publicIPAllocationMethod": "Dynamic",
@@ -55,7 +55,7 @@
 		{
 			"apiVersion": "[variables('apiVersion')]",
 			"type": "Microsoft.Network/virtualNetworks",
-			"name": "bng-vnet",
+			"name": "bngvnet",
 			"location": "[variables('location')]",
 			"properties": {
 				"addressSpace": {
@@ -65,7 +65,7 @@
 				},
 				"subnets": [
 					{
-						"name": "bng-subnet",
+						"name": "bngsubnet",
 						"properties": {
 							"addressPrefix": "[variables('subnetPrefix')]"
 						}
@@ -76,11 +76,11 @@
 		{
 			"apiVersion": "[variables('apiVersion')]",
 			"type": "Microsoft.Network/networkInterfaces",
-			"name": "bng-nic1",
+			"name": "bngnic1",
 			"location": "[variables('location')]",
 			"dependsOn": [
-				"Microsoft.Network/publicIPAddresses/bng-publicip",
-				"Microsoft.Network/virtualNetworks/bng-vnet"
+				"Microsoft.Network/publicIPAddresses/bngpublicip",
+				"Microsoft.Network/virtualNetworks/bngvnet"
 			],
 			"properties": {
 				"ipConfigurations": [
@@ -89,10 +89,10 @@
 						"properties": {
 							"privateIPAllocationMethod": "Dynamic",
 							"publicIPAddress": {
-								"id": "[resourceId('Microsoft.Network/publicIPAddresses/bng-publicip')]"
+								"id": "[resourceId('Microsoft.Network/publicIPAddresses/bngpublicip')]"
 							},
 							"subnet": {
-								"id": "[resourceId('Microsoft.Network/virtualNetworks/bng-vnet/subnets/bng-subnet')]"
+								"id": "[resourceId('Microsoft.Network/virtualNetworks/bngvnet/subnets/bngsubnet')]"
 							}
 						}
 					}
@@ -102,18 +102,18 @@
 		{
 			"apiVersion": "[variables('apiVersion')]",
 			"type": "Microsoft.Compute/virtualMachines",
-			"name": "bng-vm",
+			"name": "bngvm",
 			"location": "[variables('location')]",
 			"dependsOn": [
-				"Microsoft.Storage/storageAccounts/bng-storage",
-				"Microsoft.Network/networkInterfaces/bng-nic1"
+				"Microsoft.Storage/storageAccounts/bngstorage",
+				"Microsoft.Network/networkInterfaces/bngnic1"
 			],
 			"properties": {
 				"hardwareProfile": {
 					"vmSize": "Standard A1"
 				},
 				"osProfile": {
-					"computerName": "bng-vm",
+					"computerName": "bngvm",
 					"adminUsername": "this_value_is_ignored",
 					"adminPassword": "[parameters('Password')]",
 					"customData": "[parameters('customData')]"
@@ -126,7 +126,7 @@
 							"uri" : "[parameters('userImageVhdURI')]"
 						},
 						"vhd": {
-							"uri": "bng-storage/bng-vm-os.vhd"
+							"uri": "bngstorage/bngvm-os.vhd"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
@@ -135,7 +135,7 @@
 				"networkProfile": {
 					"networkInterfaces": [
 						{
-							"id": "[resourceId('Microsoft.Network/networkInterfaces/bng-nic1')]"
+							"id": "[resourceId('Microsoft.Network/networkInterfaces/bngnic1')]"
 						}
 					]
 				},
