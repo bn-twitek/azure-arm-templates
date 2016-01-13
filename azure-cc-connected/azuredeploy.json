@@ -79,7 +79,7 @@
 			"name": "bng-nic1",
 			"location": "[variables('location')]",
 			"dependsOn": [
-				"Microsoft.Network/publicIPAddress/bng-publicip",
+				"Microsoft.Network/publicIPAddresses/bng-publicip",
 				"Microsoft.Network/virtualNetworks/bng-vnet"
 			],
 			"properties": {
