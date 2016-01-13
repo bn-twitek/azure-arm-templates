@@ -105,7 +105,7 @@
 			"name": "bng-vm",
 			"location": "[variables('location')]",
 			"dependsOn": [
-				"Microsoft.Storage/storageAccount/bng-storage",
+				"Microsoft.Storage/storageAccounts/bng-storage",
 				"Microsoft.Network/networkInterfaces/bng-nic1"
 			],
 			"properties": {
