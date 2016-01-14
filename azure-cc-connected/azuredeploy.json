@@ -129,7 +129,7 @@
 							"uri" : "[parameters('userImageVhdURI')]"
 						},
 						"vhd": {
-							"uri": "[concat(variables('storageName'), '2/bngvm-os.vhd')]"
+							"uri": "[concat(uniquestring(resourceGroup().id), 'ngf/bngvm-os.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
