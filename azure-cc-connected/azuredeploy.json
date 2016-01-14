@@ -129,7 +129,7 @@
 							"uri" : "[parameters('userImageVhdURI')]"
 						},
 						"vhd": {
-							"uri": "[concat('http://', parameters('storageName'), '.blob.core.windows.net/ngf/bngvm-os.vhd')]"
+							"uri": "[concat('http://', variables('storageName'), '.blob.core.windows.net/ngf/bngvm-os.vhd')]"
 						},
 						"caching": "ReadWrite",
 						"createOption": "FromImage"
