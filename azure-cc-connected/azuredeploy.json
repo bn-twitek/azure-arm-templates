@@ -14,6 +14,42 @@
 				"description": "Password for the Virtual Machine."
 			}
 		},
+		"ccip": {
+			"type": "string",
+			"metadata": {
+				"description": "IP of the CC"
+			}
+		},
+		"ccuser": {
+			"type": "string",
+			"metadata": {
+				"description": "User the CC"
+			}
+		},
+		"ccpwd": {
+			"type": "string",
+			"metadata": {
+				"description": "Password on the CC"
+			}
+		},
+		"range": {
+			"type": "string",
+			"metadata": {
+				"description": "Range"
+			}
+		},
+		"cluster": {
+			"type": "string",
+			"metadata": {
+				"description": "Cluster"
+			}
+		},
+		"boxname": {
+			"type": "string",
+			"metadata": {
+				"description": "Boxname"
+			}
+		},
 		"userImageVhdURI": {
 			"type": "string",
 			"metadata": {
@@ -119,7 +155,7 @@
 					"computerName": "bngvm",
 					"adminUsername": "this_value_is_ignored",
 					"adminPassword": "[parameters('Password')]",
-					"customData": "[parameters('customData')]"
+					"customData": "[base64(concat('#!/bin/bash\\n\\n', 'echo \"', parameters('ccpwd'), '\" | /opt/phion/bin/getpar -a ', parameters('ccip'), ' -u ', parameters('ccuser'), ' -c ', parameters('cluster'), ' -r ', parameters('range'), ' -b ', parameters('boxname'), ' -d /opt/phion/update/box.par -s --verbosity 10 >> /tmp/getpar.log'))]"
 				},
 				"storageProfile": {
 					"osDisk": {
