@@ -27,7 +27,7 @@
 			}
 		},
 		"ccpwd": {
-			"type": "string",
+			"type": "securestring",
 			"metadata": {
 				"description": "Password on the CC"
 			}
@@ -155,7 +155,7 @@
 					"computerName": "bngvm",
 					"adminUsername": "this_value_is_ignored",
 					"adminPassword": "[parameters('Password')]",
-					"customData": "[base64(concat('#!/bin/bash\\n\\n', 'echo \"', parameters('ccpwd'), '\" | /opt/phion/bin/getpar -a ', parameters('ccip'), ' -u ', parameters('ccuser'), ' -c ', parameters('cluster'), ' -r ', parameters('range'), ' -b ', parameters('boxname'), ' -d /opt/phion/update/box.par -s --verbosity 10 >> /tmp/getpar.log'))]"
+					"customData": "[base64(concat('#!/bin/bash\n\n', 'echo \"', parameters('ccpwd'), '\" | /opt/phion/bin/getpar -a ', parameters('ccip'), ' -u ', parameters('ccuser'), ' -c ', parameters('cluster'), ' -r ', parameters('range'), ' -b ', parameters('boxname'), ' -d /opt/phion/update/box.par -s --verbosity 10 >> /tmp/getpar.log'))]"
 				},
 				"storageProfile": {
 					"osDisk": {
