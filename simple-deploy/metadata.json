@@ -1,0 +1,8 @@
+{
+	"itemDisplayName": "Deploy a CC-managed Barracuda NextGen Firewall F-Series",
+	"description": "Deploy a Barracuda NextGen Firewall F-Series and automatically connect it to a NextGen Control Center",
+	"summary": "Deploy a Barracuda NextGen Firewall F-Series and automatically connect it to a NextGen Control Center",
+	"githubUsername": "twitek",
+	"dateUpdated": "2015-12-23"
+}
+
